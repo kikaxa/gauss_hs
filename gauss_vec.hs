@@ -30,7 +30,7 @@ gaussianReduce matrix = UV.foldl reduceRow matrix $ UV.enumFromN 0 matrixlength 
   nextrows = V.map subrow $ V.unsafeDrop (r+1) matrix2
   in V.take r matrix2 `V.snoc` row1 V.++ nextrows
 
-substitute matrix = V.foldr next (UV.singleton (UV.unsafeLast (V.unsafeLast matrix))) (V.unsafeInit matrix) where
+substitute matrix = V.foldr next UV.empty matrix where
  lengthmatrix = V.length matrix
  next row found = let
   subpart = UV.unsafeInit $ UV.unsafeDrop (lengthmatrix - UV.length found) row
@@ -42,4 +42,3 @@ solve :: Matrix -> Row
 solve = substitute . gaussianReduce
 
 main = print . UV.sum . solve $ genMatr 300
-
